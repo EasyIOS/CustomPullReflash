@@ -27,4 +27,5 @@
 效果见AppStore的APP:脉冲书志
 
 那大致就像下面这个圆圈的效果：
+
 ![image](http://code4app.qiniudn.com/photo/52be2645cb7e84cb558b4d73_1.gif)
