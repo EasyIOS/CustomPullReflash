@@ -10,16 +10,11 @@
 
 @implementation CircleTransView
 
-- (id)initWithFrame:(CGRect)frame with:(UIScrollView *)scrollView
+- (id)initWithScrollView:(UIScrollView *)scrollView
 {
-    self = [super initWithFrame:frame with:scrollView];
+    self = [super initWithScrollView:scrollView];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        
-        [RACObserve(self, alignInset)
-         subscribeNext:^(NSNumber* alignInset) {
-             scrollView.pullToRefreshView.frame = CGRectMake(0, 10, scrollView.pullToRefreshView.superview.width, SVPullToRefreshViewHeight);
-         }];
         
         @weakify(self);
         [RACObserve(scrollView.pullToRefreshView, state) subscribeNext:^(id x) {
@@ -59,8 +54,17 @@
                     
             }
         }];
+        
+        [self setHeaderFrame:scrollView];
+        
     }
     return self;
+}
+
+
+-(void)setHeaderFrame:(UIScrollView *)scrollView{
+    self.frame = CGRectMake(0, 0, 30, 30);
+    scrollView.pullToRefreshView.frame = CGRectMake(0, 10, scrollView.pullToRefreshView.superview.width, SVPullToRefreshViewHeight);
 }
 
 - (void)drawRect:(CGRect)rect

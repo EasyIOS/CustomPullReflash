@@ -10,9 +10,8 @@
 	        self.sceneModel.request.page = @1;
 	        self.sceneModel.active = YES;
 	    } customer:YES];
-	    
-
-	    CircleView *circleView = [[CircleView alloc] initWithframe:CGRectMake(0 0 30 30) with:self.tableView];
+	   
+	    CircleView *circleView = [[CircleView alloc] initWithScrollView:self.tableView];
 	    [self.tableView.pullToRefreshView setCustomView:circleView];
 	    
 	    [self.tableView addInfiniteScrollingWithActionHandler:^{
@@ -21,7 +20,7 @@
 	        self.sceneModel.active = YES;
 	    } customer:YES];
 
-	    InfiniteView *infiniteView = [[InfiniteView alloc] initWithframe:CGRectMake(0 0 30 30) with:self.tableView];
+	    InfiniteView *infiniteView = [[InfiniteView alloc] initWithScrollView:self.tableView];
 	    [self.tableView.infiniteScrollingView setCustomView:infiniteView];
 
 效果见AppStore的APP:脉冲书志

@@ -10,22 +10,10 @@
 
 @implementation InfiniteView
 
-- (id)initWithFrame:(CGRect)frame with:(UIScrollView *)scrollView
+- (id)initWithScrollView:(UIScrollView *)scrollView
 {
-    self = [super initWithFrame:frame with:scrollView];
+    self = [super initWithScrollView:scrollView];
     if (self) {
-        
-        scrollView.infiniteScrollingView.frame = CGRectMake(0, scrollView.superview.height, scrollView.superview.width, SVInfiniteScrollingViewHeight);
-        @weakify(scrollView);
-        [[RACObserve(scrollView, contentSize) filter:^BOOL(id value) {
-            @strongify(scrollView);
-            NSLog(@"%f",scrollView.bounds.size.height);
-            return scrollView.contentSize.height>scrollView.bounds.size.height && scrollView.bounds.size.height >0;
-        }] subscribeNext:^(id x) {
-            @strongify(scrollView);
-            scrollView.infiniteScrollingView.frame = CGRectMake(0, scrollView.contentSize.height, scrollView.infiniteScrollingView.width, SVInfiniteScrollingViewHeight);
-        }];
-        
         self.backgroundColor = [UIColor clearColor];
         
         @weakify(self);
@@ -66,8 +54,27 @@
                     break;
             }
         }];
+        
+        [self setFooterFrame:scrollView];
     }
     return self;
+}
+
+-(void)setFooterFrame:(UIScrollView *)scrollView{
+    
+    self.frame = CGRectMake(0, 0, 30, 30);
+
+    scrollView.infiniteScrollingView.frame = CGRectMake(0, scrollView.superview.height, scrollView.superview.width, SVInfiniteScrollingViewHeight);
+    @weakify(scrollView);
+    [[RACObserve(scrollView, contentSize) filter:^BOOL(id value) {
+        @strongify(scrollView);
+        NSLog(@"%f",scrollView.bounds.size.height);
+        return scrollView.contentSize.height>scrollView.bounds.size.height && scrollView.bounds.size.height >0;
+    }] subscribeNext:^(id x) {
+        @strongify(scrollView);
+        scrollView.infiniteScrollingView.frame = CGRectMake(0, scrollView.contentSize.height, scrollView.infiniteScrollingView.width, SVInfiniteScrollingViewHeight);
+    }];
+
 }
 
 - (void)drawRect:(CGRect)rect

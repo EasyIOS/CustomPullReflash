@@ -10,22 +10,11 @@
 
 @implementation CircleView
 
-- (id)initWithFrame:(CGRect)frame with:(UIScrollView *)scrollView
+- (id)initWithScrollView:(UIScrollView *)scrollView
 {
-    self = [super initWithFrame:frame with:scrollView];
+    self = [super initWithScrollView:scrollView];
     if (self) {
-        
-        [RACObserve(self, alignInset)
-         subscribeNext:^(NSNumber* alignInset) {
-             CGFloat yOrigin =0;
-             if (alignInset.boolValue) {
-                 yOrigin = - SVPullToRefreshViewHeight;
-             }else{
-                 yOrigin = - scrollView.pullToRefreshView.originalTopInset -SVPullToRefreshViewHeight;
-             }
-             scrollView.pullToRefreshView.frame = CGRectMake(0, yOrigin, scrollView.superview.width, SVPullToRefreshViewHeight);
-         }];
-        
+
         // Initialization code
         self.backgroundColor = [UIColor clearColor];
         @weakify(self);
@@ -66,8 +55,15 @@
                     break;
             }
         }];
+        
+          [self setHeaderFrame:scrollView];
     }
     return self;
+}
+
+-(void)setHeaderFrame:(UIScrollView *)scrollView{
+    self.frame = CGRectMake(0, 0, 30, 30);
+    scrollView.pullToRefreshView.frame = CGRectMake(0, - SVPullToRefreshViewHeight, scrollView.superview.width, SVPullToRefreshViewHeight);
 }
 
 - (void)drawRect:(CGRect)rect
